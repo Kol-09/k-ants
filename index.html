@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Ants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: #fff;
+            padding-top: 1em;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 1em;
+            background: #333;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        nav a {
+            color: #fff;
+            margin: 0 1em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 2em;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .tab-content {
+            display: none;
+            text-align: center;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1em;
+            margin: 1em 0;
+            background-color: #fff;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .product img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product h2 {
+            margin: 0.5em 0;
+        }
+
+        .product p {
+            color: #555;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #4CAF50;
+            color: #fff;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+            margin-top: auto;
+        }
+
+        .product-details {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 2em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .product-details img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 1em;
+        }
+
+        .product-details h2 {
+            margin: 1em 0;
+        }
+
+        .product-details p {
+            color: #555;
+            margin-bottom: 1em;
+        }
+
+        .product-details .price {
+            font-weight: bold;
+            font-size: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .buy-button {
+            margin-top: 0.5em;
+            padding: 0.5em 1em;
+            background-color: #FF9800;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-button {
+            margin-top: 0.5em;
+            padding: 0.5em 1em;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('nav a');
+            const contents = document.querySelectorAll('.tab-content');
+            const products = document.querySelectorAll('.product');
+            const productDetailsSection = document.querySelector('.product-details');
+            const backButton = document.querySelector('.back-button');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    contents.forEach(content => content.classList.remove('active'));
+                    tabs.forEach(t => t.classList.remove('selected'));
+
+                    const targetId = this.getAttribute('href').substring(1);
+                    document.getElementById(targetId).classList.add('active');
+                    this.classList.add('selected');
+                    productDetailsSection.style.display = 'none';
+                });
+            });
+
+            products.forEach(product => {
+                product.addEventListener('click', function () {
+                    contents.forEach(content => content.classList.remove('active'));
+                    productDetailsSection.style.display = 'flex';
+                    const productName = this.querySelector('h2').textContent;
+                    const productDescription = this.querySelector('p').textContent;
+                    const productPrice = this.querySelector('.price') ? this.querySelector('.price').textContent : 'Цена: -';
+                    const productImage = this.querySelector('img').getAttribute('src');
+
+                    productDetailsSection.querySelector('img').setAttribute('src', productImage);
+                    productDetailsSection.querySelector('h2').textContent = productName;
+                    productDetailsSection.querySelector('p').textContent = productDescription;
+                    productDetailsSection.querySelector('.price').textContent = productPrice;
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+
+            backButton.addEventListener('click', function () {
+                productDetailsSection.style.display = 'none';
+                document.getElementById('products').classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Set default active tab
+            tabs[0].click();
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>K-Ants</h1>
+        <p>Лучший выбор для любителей муравьёв</p>
+        <nav>
+            <a href="#about">О нас</a>
+            <a href="#products">Товары</a>
+            <a href="#contact">Контакты</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="about" class="tab-content" style="font-size: 2em;">
+            <h2>О нас</h2>
+            <p><b>Мы — K-Ants</b>, магазин, специализирующийся на муравьях, муравьиных фермах, аксессуарах и всем, что связано с муравьиной тематикой.</p>
+            <p><b>Наши муравьи — это отличные питомцы для детей и взрослых.</b> Они почти не требуют ухода, увлекательны для наблюдения и могут стать необычным подарком или украшением для дома или офиса.</p>
+            <p>Мы предлагаем только <b>качественные фермы и аксессуары</b>, а также обеспечиваем поддержку наших клиентов на каждом этапе покупки.</p>
+            <img src="./images/logo.jpg" alt="K-Ants Logo" style="margin-top: 1em;">
+        </section>
+
+        <section id="products" class="tab-content">
+            <h2>Наши товары</h2>
+
+            <div class="product">
+                <img src="./images/messor-structor.jpg" alt="Messor structor">
+                <h2>Messor structor (степной муравей-жнец)</h2>
+                <p>Messor structor — неприхотливые зерноядные муравьи-жнецы. В зимовке не нуждаются.</p>
+                <p class="price">Цена: 990 руб.</p>
+            </div>
+
+            <div class="product">
+                <img src="./images/camponotus-fellah.jpg" alt="Camponotus fellah">
+                <h2>Camponotus fellah</h2>
+                <p>Социальные муравьи с интересным поведением и хорошо развитой организацией.</p>
+                <p class="price">Цена: 3999 руб.</p>
+            </div>
+
+            <div class="product">
+                <img src="./images/harpegnathos-venator.jpg" alt="Harpegnathos venator">
+                <h2>Harpegnathos venator</h2>
+                <p>Экзотические муравьи с необычным поведением и эффектной внешностью.</p>
+                <p class="price">Цена: 4999 руб.</p>
+            </div>
+
+            <div class="product">
+                <img src="./images/standard-farm.jpg" alt="Ферма стандарт">
+                <h2>Ферма стандарт</h2>
+                <p>Стандарт — не модульная ферма, универсальность и лучшие технологии собраны в ней.<br>Размеры: 200*200, высота арены 80<br>Высота камер над гипсом: 6<br>Высота камер без гипса: 9<br>Подходит для муравьев, размером до 15 мм.</p>
+                <p class="price">Цена: 2500 руб.</p>
+            </div>
+        </section>
+
+        <section class="product-details">
+            <img src="" alt="">
+            <h2></h2>
+            <p></p>
+            <p class="price"></p>
+            <a href="https://t.me/kol_09p" class="buy-button">Купить</a>
+            <a href="#products" class="back-button">Вернуться к товарам</a>
+        </section>
+
+        <section id="contact" class="tab-content" style="font-size: 2em;">
+            <h2>Контакты</h2>
+            <p>Свяжитесь с нами по телефону: <a href="tel:+79381346456">+7 938 134 6456</a></p>
+            <p>Телеграм: <a href="https://t.me/kol_09p">t.me/kol_09p</a></p>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p><b>&copy; 2024 K-Ants. Все права защищены.</b></p>
+        <!-- <p>Сайт делал <a href="https://vo0ov.ru/">vo0ov</a> по заказу <a href="https://t.me/kol_09p">@kol_09p</a></p> -->
+    </footer>
+</body>
+
+</html>
